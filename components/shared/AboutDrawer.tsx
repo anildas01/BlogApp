@@ -43,7 +43,7 @@ export function AboutDrawer() {
 
             <SheetContent
                 side="right"
-                className="w-full sm:w-[450px] p-0 border-l"
+                className="w-full sm:w-112.5 p-0 border-l"
                 showClose={false}
             >
                 <SheetTitle className="sr-only">About Me</SheetTitle>

@@ -105,7 +105,7 @@ export default function CommentSection({ postId, slug, initialComments }: Commen
                             id="content"
                             name="content"
                             placeholder="Share your thoughts..."
-                            className="min-h-[100px]"
+                            className="min-h-25"
                             required
                         />
                     </div>

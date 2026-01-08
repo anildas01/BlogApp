@@ -8,3 +8,15 @@ export interface Post {
     published: boolean;
     published_at: string | null;
 }
+
+export interface Project {
+    id: number;
+    title: string;
+    slug: string;
+    description: string;
+    technologies: string[];
+    image_url: string | null;
+    repo_link: string | null;
+    live_link: string | null;
+    created_at?: string;
+}

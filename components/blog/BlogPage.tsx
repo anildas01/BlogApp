@@ -29,7 +29,7 @@ export default async function BlogPage() {
                     <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
                         Writing & <span className="text-primary">Thoughts</span>
                     </h1>
-                    <p className="text-muted-foreground text-lg max-w-[700px]">
+                    <p className="text-muted-foreground text-lg max-w-175">
                         Articles on technology, development, and my experiences.
                     </p>
                 </div>

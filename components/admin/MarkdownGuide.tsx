@@ -16,7 +16,7 @@ export function MarkdownGuide() {
 
     const CodeSnippet = ({ code, label }: { code: string, label: string }) => (
         <div className="flex items-center gap-2 mb-1 group">
-            <code className="bg-muted px-1 rounded flex-1 text-xs font-mono break-words whitespace-pre-wrap">{code}</code>
+            <code className="bg-muted px-1 rounded flex-1 text-xs font-mono wrap-break-word whitespace-pre-wrap">{code}</code>
             <Button
                 variant="ghost"
                 size="icon"
