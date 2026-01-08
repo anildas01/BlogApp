@@ -1,0 +1,168 @@
+@import "tailwindcss";
+
+@plugin "tailwindcss-animate";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --animate-fade-in-up: fade-in-up 0.5s ease-out forwards;
+
+  @keyframes fade-in-up {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/*
+  MASTER PALETTE: Electric Blue x Aqua x Warm White
+  Primary:      #2563EB (Electric Blue)
+  Secondary:    #22D3EE (Aqua Cyan)
+  Accent:       #F97316 (Soft Orange)
+  Background:   #F8FAFC (Warm White) - Slate-50
+  Text:         #0F172A (Deep Navy) - Slate-900
+*/
+
+:root {
+  --radius: 0.3rem;
+
+  /* Modern Light Theme (Default) */
+  --background: #FFFFFF;
+  --foreground: #0F172A;
+
+  --card: #FFFFFF;
+  --card-foreground: #0F172A;
+
+  --popover: #FFFFFF;
+  --popover-foreground: #0F172A;
+
+  --primary: #2563EB;
+  /* Deep Professional Blue */
+  --primary-foreground: #FFFFFF;
+
+  --secondary: #F1F5F9;
+  /* Slate-100 */
+  --secondary-foreground: #0F172A;
+
+  --muted: #F8FAFC;
+  --muted-foreground: #64748B;
+
+  --accent: #0EA5E9;
+  /* Sky blue */
+  --accent-foreground: #FFFFFF;
+
+  --destructive: #EF4444;
+  --destructive-foreground: #FFFFFF;
+
+  --border: #E2E8F0;
+  /* Slate-200 */
+  --input: #E2E8F0;
+  --ring: #2563EB;
+
+  --chart-1: #2563EB;
+  --chart-2: #22D3EE;
+  --chart-3: #F97316;
+  --chart-4: #0F172A;
+  --chart-5: #64748B;
+}
+
+.dark {
+  /* Deep Navy Dark Theme */
+  --background: #020617;
+  /* Slate-950 */
+  --foreground: #F8FAFC;
+
+  --card: #0F172A;
+  /* Slate-900 */
+  --card-foreground: #F8FAFC;
+
+  --popover: #0F172A;
+  --popover-foreground: #F8FAFC;
+
+  --primary: #3B82F6;
+  /* Brighter Blue for Dark Mode */
+  --primary-foreground: #FFFFFF;
+
+  --secondary: #22D3EE;
+  /* Aqua stays distinct */
+  --secondary-foreground: #0F172A;
+
+  --muted: #1E293B;
+  /* Slate-800 */
+  --muted-foreground: #94A3B8;
+
+  --accent: #F97316;
+  /* Orange stays */
+  --accent-foreground: #FFFFFF;
+
+  --destructive: #EF4444;
+  --destructive-foreground: #FFFFFF;
+
+  --border: #1E293B;
+  --input: #1E293B;
+  --ring: #3B82F6;
+
+  --chart-1: #3B82F6;
+  --chart-2: #22D3EE;
+  --chart-3: #F97316;
+  --chart-4: #F8FAFC;
+  --chart-5: #94A3B8;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+}
+
+/* Animations */
