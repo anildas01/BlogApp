@@ -22,9 +22,6 @@ export default async function DashboardPage() {
                 <h1 className="text-3xl font-bold tracking-tight">
                     Dashboard
                 </h1>
-                <div className="text-sm text-muted-foreground">
-                    Logged in as: <span className="font-medium text-foreground">{user?.email}</span>
-                </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

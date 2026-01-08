@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 
 export function AdminMobileNav() {
     const [isMounted, setIsMounted] = useState(false);
+    const [open, setOpen] = useState(false);
 
     useEffect(() => {
         setIsMounted(true);
@@ -22,7 +23,7 @@ export function AdminMobileNav() {
     }
 
     return (
-        <Sheet>
+        <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
                 <Button variant="ghost" size="icon">
                     <Menu className="h-6 w-6" />
@@ -31,7 +32,7 @@ export function AdminMobileNav() {
             <SheetContent side="left" className="p-0 w-64">
                 <SheetTitle className="sr-only">Admin Menu</SheetTitle>
                 <SheetDescription className="sr-only">Navigation sidebar for admin dashboard</SheetDescription>
-                <AdminSidebar className="border-none" />
+                <AdminSidebar className="border-none" onClose={() => setOpen(false)} />
             </SheetContent>
         </Sheet>
     );

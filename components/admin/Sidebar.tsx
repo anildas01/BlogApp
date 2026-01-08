@@ -1,12 +1,16 @@
+"use client";
+
 import Link from "next/link";
 import { LayoutDashboard, FolderKanban, FileText, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { logout } from "@/actions/auth";
 import { cn } from "@/lib/utils";
 
-interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> { }
+interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
+    onClose?: () => void;
+}
 
-export function AdminSidebar({ className }: SidebarProps) {
+export function AdminSidebar({ className, onClose }: SidebarProps) {
     return (
         <div className={cn("border-r bg-muted/40 h-full flex flex-col", className)}>
             <div className="p-6 border-b">
@@ -14,13 +18,13 @@ export function AdminSidebar({ className }: SidebarProps) {
             </div>
             <nav className="flex-1 p-4 space-y-2">
                 <Button variant="ghost" className="w-full justify-start" asChild>
-                    <Link href="/admin">
+                    <Link href="/admin" onClick={onClose}>
                         <LayoutDashboard className="mr-2 h-4 w-4" />
                         Dashboard
                     </Link>
                 </Button>
                 <Button variant="ghost" className="w-full justify-start" asChild>
-                    <Link href="/admin/blog">
+                    <Link href="/admin/blog" onClick={onClose}>
                         <FileText className="mr-2 h-4 w-4" />
                         Blog
                     </Link>

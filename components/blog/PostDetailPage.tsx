@@ -29,8 +29,8 @@ export default async function PostDetailPage({ slug }: { slug: string }) {
         .order("created_at", { ascending: true });
 
     return (
-        <div className="container px-4 md:px-6 py-10 max-w-3xl mx-auto">
-            <Button variant="ghost" size="sm" asChild className="mb-6 -ml-4">
+        <div className="container px-4 md:px-6 py-8 md:py-10 max-w-3xl mx-auto">
+            <Button variant="ghost" size="sm" asChild className="mb-6 -ml-2 md:-ml-4">
                 <Link href="/">
                     <ChevronLeft className="mr-2 h-4 w-4" />
                     Back to Blog
@@ -38,16 +38,16 @@ export default async function PostDetailPage({ slug }: { slug: string }) {
             </Button>
 
             <article>
-                <header className="mb-8">
-                    <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">
+                <header className="mb-6 md:mb-8">
+                    <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold tracking-tight mb-3 md:mb-4 leading-tight">
                         {post.title}
                     </h1>
-                    <div className="text-muted-foreground">
+                    <div className="text-sm md:text-base text-muted-foreground">
                         {post.published_at ? new Date(post.published_at).toLocaleDateString() : "Draft"}
                     </div>
                 </header>
 
-                <div className="prose prose-neutral dark:prose-invert max-w-none mb-16">
+                <div className="prose prose-sm sm:prose-base prose-neutral dark:prose-invert max-w-none mb-12 md:mb-16">
                     <ReactMarkdown>{post.content || ""}</ReactMarkdown>
                 </div>
 

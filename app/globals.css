@@ -156,12 +156,22 @@
 }
 
 @layer base {
-  * {
+  *,
+  *::before,
+  *::after {
     @apply border-border outline-ring/50;
+    box-sizing: border-box;
+  }
+
+  html {
+    overflow-x: hidden;
+    scroll-behavior: smooth;
   }
 
   body {
     @apply bg-background text-foreground antialiased;
+    overflow-x: hidden;
+    min-height: 100vh;
   }
 }
 
