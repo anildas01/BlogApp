@@ -6,10 +6,28 @@ import { Github, Linkedin, Twitter, Instagram, Mail, MapPin, Phone, User, X, Fac
 import { SITE_CONFIG } from "@/lib/site-config";
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export function AboutDrawer() {
     const [open, setOpen] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    if (!isMounted) {
+        return (
+            <div className="fixed right-3 md:right-8 top-3 md:top-8 z-50">
+                <Button
+                    size="icon"
+                    className="h-12 w-12 md:h-14 md:w-14 rounded-full shadow-lg shadow-primary/20 bg-primary hover:bg-primary/90 text-white border-0"
+                >
+                    <Menu className="h-5 w-5 md:h-6 md:w-6" />
+                </Button>
+            </div>
+        );
+    }
 
     return (
         <Sheet open={open} onOpenChange={setOpen}>
