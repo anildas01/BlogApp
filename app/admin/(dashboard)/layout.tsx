@@ -1,8 +1,6 @@
 import { AdminSidebar } from "@/components/admin/Sidebar";
 import type { Metadata } from "next";
-import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
+import { AdminMobileNav } from "@/components/admin/AdminMobileNav";
 
 export const metadata: Metadata = {
     title: "Admin Dashboard",
@@ -21,18 +19,7 @@ export default function AdminLayout({
 
             {/* Mobile Header */}
             <div className="md:hidden p-4 border-b flex items-center bg-background sticky top-0 z-50">
-                <Sheet>
-                    <SheetTrigger asChild>
-                        <Button variant="ghost" size="icon">
-                            <Menu className="h-6 w-6" />
-                        </Button>
-                    </SheetTrigger>
-                    <SheetContent side="left" className="p-0 w-64">
-                        <SheetTitle className="sr-only">Admin Menu</SheetTitle>
-                        <SheetDescription className="sr-only">Navigation sidebar for admin dashboard</SheetDescription>
-                        <AdminSidebar className="border-none" />
-                    </SheetContent>
-                </Sheet>
+                <AdminMobileNav />
                 <span className="ml-4 font-semibold">Admin Dashboard</span>
             </div>
 

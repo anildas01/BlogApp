@@ -19,7 +19,7 @@ export async function login(formData: FormData) {
     if (error) {
         // In a real app we might return the error to display it nicely
         // sending a query param is a quick way to show validation
-        redirect('/login?error=Invalid credentials')
+        redirect('/admin/anildaspoolatt/login?error=Invalid credentials')
     }
 
     revalidatePath('/', 'layout')
@@ -32,5 +32,5 @@ export async function logout() {
     await supabase.auth.signOut()
 
     revalidatePath('/', 'layout')
-    redirect('/login')
+    redirect('/admin/anildaspoolatt/login')
 }

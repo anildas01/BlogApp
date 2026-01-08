@@ -1,15 +1,33 @@
+'use client';
+
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
 import { login } from "@/actions/auth"
+import { useSearchParams, useRouter } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
 
-export default function LoginPage({
-    searchParams,
-}: {
-    searchParams: { [key: string]: string | string[] | undefined }
-}) {
-    const error = searchParams?.error as string;
+export default function LoginPage() {
+    const searchParams = useSearchParams();
+    const error = searchParams.get('error');
+    const { toast } = useToast();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (error) {
+            toast({
+                variant: "destructive",
+                title: "Login Failed",
+                description: error,
+            });
+            // Optional: Remove error from URL
+            const params = new URLSearchParams(searchParams.toString());
+            params.delete('error');
+            router.replace(`?${params.toString()}`);
+        }
+    }, [error, toast, router, searchParams]);
 
     return (
         <div className="flex min-h-[calc(100vh-140px)] items-center justify-center p-4">
@@ -28,13 +46,8 @@ export default function LoginPage({
                             <Label htmlFor="password">Password</Label>
                             <Input id="password" name="password" type="password" required />
                         </div>
-                        {error && (
-                            <div className="text-sm text-red-500 font-medium">
-                                Error: {error}
-                            </div>
-                        )}
                     </CardContent>
-                    <CardFooter>
+                    <CardFooter className="pt-2">
                         <Button className="w-full">Sign In</Button>
                     </CardFooter>
                 </form>

@@ -22,12 +22,15 @@ export async function createPost(formData: FormData) {
 
     if (error) {
         console.error('Error creating post:', error)
-        redirect('/admin/blog/create?error=Failed to create post')
+        if (error.code === '23505') {
+            return { success: false, error: 'A post with this slug already exists. Please choose a different one.' }
+        }
+        return { success: false, error: 'Failed to create post' }
     }
 
     revalidatePath('/blog')
     revalidatePath('/admin/blog')
-    redirect('/admin/blog')
+    return { success: true }
 }
 
 export async function updatePost(id: number, formData: FormData) {
@@ -48,12 +51,15 @@ export async function updatePost(id: number, formData: FormData) {
 
     if (error) {
         console.error('Error updating post:', error)
-        throw new Error('Failed to update post')
+        if (error.code === '23505') {
+            return { success: false, error: 'A post with this slug already exists. Please choose a different one.' }
+        }
+        return { success: false, error: 'Failed to update post' }
     }
 
     revalidatePath('/blog')
     revalidatePath('/admin/blog')
-    redirect('/admin/blog')
+    return { success: true }
 }
 
 export async function deletePost(id: number) {
@@ -63,9 +69,10 @@ export async function deletePost(id: number) {
 
     if (error) {
         console.error('Error deleting post:', error)
-        throw new Error('Failed to delete post')
+        return { success: false, error: 'Failed to delete post' }
     }
 
     revalidatePath('/blog')
     revalidatePath('/admin/blog')
+    return { success: true }
 }

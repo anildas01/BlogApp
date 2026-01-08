@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { Plus, Trash2, FileText, Edit, Eye } from "lucide-react";
+import { Plus, FileText, Edit, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
-import { deletePost } from "@/actions/blog";
 import { Post } from "@/types";
+import { DeletePostButton } from "@/components/admin/DeletePostButton";
 
 export default async function AdminPostsPage() {
     const supabase = await createClient();
@@ -60,11 +60,7 @@ export default async function AdminPostsPage() {
                                                 <Edit className="h-4 w-4" />
                                             </Link>
                                         </Button>
-                                        <form action={deletePost.bind(null, post.id)}>
-                                            <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive hover:bg-destructive/10">
-                                                <Trash2 className="h-4 w-4" />
-                                            </Button>
-                                        </form>
+                                        <DeletePostButton postId={post.id} />
                                     </div>
                                 </td>
                             </tr>

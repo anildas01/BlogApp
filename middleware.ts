@@ -35,8 +35,24 @@ export async function middleware(request: NextRequest) {
         data: { user },
     } = await supabase.auth.getUser()
 
-    if (request.nextUrl.pathname.startsWith('/admin') && !user) {
-        return NextResponse.redirect(new URL('/login', request.url))
+    const path = request.nextUrl.pathname;
+
+    // 1. Protect all /admin routes
+    if (path.startsWith('/admin')) {
+        // 2. Allow access to the secret login page
+        if (path === '/admin/anildaspoolatt/login') {
+            // Optional: If already logged in, redirect to dashboard?
+            if (user) {
+                return NextResponse.redirect(new URL('/admin', request.url))
+            }
+            return response; // Allow access to login page
+        }
+
+        // 3. If user is NOT logged in and tries to access any other /admin route
+        if (!user) {
+            // Redirect to Home Page (Obscurity: pretend /admin doesn't exist)
+            return NextResponse.redirect(new URL('/', request.url))
+        }
     }
 
     return response

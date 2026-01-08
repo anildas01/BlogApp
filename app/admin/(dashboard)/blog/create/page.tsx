@@ -4,24 +4,72 @@ import { useState } from 'react'
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { MarkdownEditor } from "@/components/admin/MarkdownEditor";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { createPost } from "@/actions/blog";
 import { ImageUpload } from "@/components/admin/ImageUpload";
+import { MarkdownGuide } from "@/components/admin/MarkdownGuide";
+import { useRouter } from "next/navigation";
 import { Copy } from 'lucide-react';
+import { useToast } from "@/hooks/use-toast";
 
 export default function CreatePostPage() {
     const [uploadedUrl, setUploadedUrl] = useState('')
+    const { toast } = useToast()
+    const router = useRouter()
 
     const copyToClipboard = () => {
         if (uploadedUrl) {
             navigator.clipboard.writeText(`![Image](${uploadedUrl})`)
-            alert("Copied Markdown image code to clipboard!")
+            toast({
+                title: "Copied!",
+                description: "Markdown image code copied to clipboard.",
+            })
+        }
+    }
+
+    const [title, setTitle] = useState('')
+    const [slug, setSlug] = useState('')
+
+    const generateSlug = (text: string) => {
+        const date = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+        const titleSlug = text
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/(^-|-$)+/g, '');
+        return `${titleSlug}-${date}`;
+    }
+
+    const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newTitle = e.target.value;
+        setTitle(newTitle);
+        setSlug(generateSlug(newTitle));
+    }
+
+    const handleSubmit = async (formData: FormData) => {
+        // ... handled manually or via FormData, but since we have state, 
+        // the inputs will have names so FormData still works.
+        // But we might want to ensure the state values are what's submitted if we used purely state.
+        // However, standard inputs with name/value/onChange work fine with FormData.
+        const result = await createPost(formData)
+
+        if (result.success) {
+            toast({
+                title: "Success",
+                description: "Post created successfully.",
+            })
+            router.push('/admin/blog')
+        } else {
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description: result.error || "Failed to create post",
+            })
         }
     }
 
     return (
-        <div className="max-w-4xl mx-auto space-y-6">
+        <div className="max-w-7xl mx-auto space-y-6">
             <div>
                 <h1 className="text-3xl font-bold tracking-tight mb-2">Write New Post</h1>
                 <p className="text-muted-foreground">Share your thoughts with the world.</p>
@@ -30,30 +78,41 @@ export default function CreatePostPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2">
                     <Card>
-                        <CardHeader>
-                            <CardTitle>Post Content</CardTitle>
-                            <CardDescription>Target URL and Markdown body.</CardDescription>
-                        </CardHeader>
+
                         <CardContent>
-                            <form action={createPost} className="space-y-4">
+                            <form action={handleSubmit} className="space-y-4">
                                 <div className="space-y-2">
                                     <Label htmlFor="title">Title</Label>
-                                    <Input id="title" name="title" required placeholder="The Future of Web Dev" />
+                                    <Input
+                                        id="title"
+                                        name="title"
+                                        required
+                                        placeholder="The Future of Web Dev"
+                                        value={title}
+                                        onChange={handleTitleChange}
+                                    />
                                 </div>
 
                                 <div className="space-y-2">
                                     <Label htmlFor="slug">Slug</Label>
-                                    <Input id="slug" name="slug" required placeholder="the-future-of-web-dev" />
+                                    <Input
+                                        id="slug"
+                                        name="slug"
+                                        required
+                                        placeholder="the-future-of-web-dev"
+                                        value={slug}
+                                        onChange={(e) => setSlug(e.target.value)}
+                                    />
                                 </div>
 
                                 <div className="space-y-2">
                                     <Label htmlFor="content">Content (Markdown)</Label>
-                                    <Textarea
+                                    <MarkdownEditor
                                         id="content"
                                         name="content"
                                         required
                                         placeholder="# Introduction\n\nWrite your post here..."
-                                        className="min-h-[500px] font-mono"
+                                        className="h-[70vh]"
                                     />
                                 </div>
 
@@ -70,7 +129,7 @@ export default function CreatePostPage() {
                     </Card>
                 </div>
 
-                <div className="space-y-6">
+                <div className="space-y-6 sticky top-6">
                     <Card>
                         <CardHeader>
                             <CardTitle>Image Helper</CardTitle>
@@ -93,6 +152,7 @@ export default function CreatePostPage() {
                             )}
                         </CardContent>
                     </Card>
+                    <MarkdownGuide />
                 </div>
             </div>
         </div>

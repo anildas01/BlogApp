@@ -4,21 +4,47 @@ import { useState } from 'react'
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { MarkdownEditor } from "@/components/admin/MarkdownEditor";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { updatePost } from "@/actions/blog";
 import { ImageUpload } from "@/components/admin/ImageUpload";
+import { MarkdownGuide } from "@/components/admin/MarkdownGuide";
 import { Copy } from 'lucide-react';
 import { Post } from '@/types';
+import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
 export default function EditPostForm({ post }: { post: Post }) {
     const [uploadedUrl, setUploadedUrl] = useState('')
+    const { toast } = useToast()
+    const router = useRouter()
     const updateWithId = updatePost.bind(null, post.id)
 
     const copyToClipboard = () => {
         if (uploadedUrl) {
             navigator.clipboard.writeText(`![Image](${uploadedUrl})`)
-            alert("Copied Markdown image code to clipboard!")
+            toast({
+                title: "Copied!",
+                description: "Markdown image code copied to clipboard.",
+            })
+        }
+    }
+
+    const handleSubmit = async (formData: FormData) => {
+        const result = await updateWithId(formData)
+
+        if (result.success) {
+            toast({
+                title: "Success",
+                description: "Post updated successfully.",
+            })
+            router.push('/admin/blog')
+        } else {
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description: result.error || "Failed to update post",
+            })
         }
     }
 
@@ -31,7 +57,7 @@ export default function EditPostForm({ post }: { post: Post }) {
                         <CardDescription>Update your content.</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <form action={updateWithId} className="space-y-4">
+                        <form action={handleSubmit} className="space-y-4">
                             <div className="space-y-2">
                                 <Label htmlFor="title">Title</Label>
                                 <Input id="title" name="title" required defaultValue={post.title} />
@@ -44,12 +70,12 @@ export default function EditPostForm({ post }: { post: Post }) {
 
                             <div className="space-y-2">
                                 <Label htmlFor="content">Content (Markdown)</Label>
-                                <Textarea
+                                <MarkdownEditor
                                     id="content"
                                     name="content"
                                     required
                                     defaultValue={post.content || ''}
-                                    className="min-h-[500px] font-mono"
+                                    className="h-[70vh]"
                                 />
                             </div>
 
@@ -73,7 +99,7 @@ export default function EditPostForm({ post }: { post: Post }) {
                 </Card>
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-6 sticky top-6">
                 <Card>
                     <CardHeader>
                         <CardTitle>Image Helper</CardTitle>
@@ -96,6 +122,7 @@ export default function EditPostForm({ post }: { post: Post }) {
                         )}
                     </CardContent>
                 </Card>
+                <MarkdownGuide />
             </div>
         </div>
     );
