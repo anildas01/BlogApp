@@ -4,6 +4,8 @@ import { Post } from "@/types";
 import { Calendar, ArrowRight } from "lucide-react";
 import Image from "next/image";
 
+export const dynamic = 'force-dynamic';
+
 export default async function BlogPage() {
     const supabase = await createClient();
     const { data: posts } = await supabase
