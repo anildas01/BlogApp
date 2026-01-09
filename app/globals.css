@@ -176,3 +176,28 @@
 }
 
 /* Animations */
+
+/* Fix list alignment in prose/markdown content */
+@layer components {
+  .prose ul,
+  .prose ol {
+    padding-left: 1.5rem;
+  }
+  
+  .prose ul[data-type="taskList"] {
+    padding-left: 0;
+    list-style: none;
+  }
+  
+  .prose ul > li,
+  .prose ol > li {
+    padding-left: 0;
+    margin-left: 0;
+  }
+  
+  /* Ensure consistent spacing for all list types */
+  .prose ul > li::marker,
+  .prose ol > li::marker {
+    display: inline-block;
+  }
+}

@@ -4,14 +4,16 @@ import { useState } from 'react'
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { MarkdownEditor } from "@/components/admin/MarkdownEditor";
+import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { createPost } from "@/actions/blog";
 import { ImageUpload } from "@/components/admin/ImageUpload";
 import { MarkdownGuide } from "@/components/admin/MarkdownGuide";
 import { useRouter } from "next/navigation";
-import { Copy } from 'lucide-react';
+import { Copy, Eye } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 export default function CreatePostPage() {
     const [uploadedUrl, setUploadedUrl] = useState('')
@@ -30,6 +32,8 @@ export default function CreatePostPage() {
 
     const [title, setTitle] = useState('')
     const [slug, setSlug] = useState('')
+    const [content, setContent] = useState('')
+    const [showPreview, setShowPreview] = useState(false)
 
     const generateSlug = (text: string) => {
         const date = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
@@ -78,7 +82,6 @@ export default function CreatePostPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2">
                     <Card>
-
                         <CardContent>
                             <form action={handleSubmit} className="space-y-4">
                                 <div className="space-y-2">
@@ -106,14 +109,49 @@ export default function CreatePostPage() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="content">Content (Markdown)</Label>
-                                    <MarkdownEditor
-                                        id="content"
-                                        name="content"
-                                        required
-                                        placeholder="# Introduction\n\nWrite your post here..."
-                                        className="h-[70vh]"
-                                    />
+                                    <div className="flex items-center justify-between">
+                                        <Label htmlFor="content">Content</Label>
+                                        <div className="flex gap-1 border rounded-md p-1">
+                                            <Button
+                                                type="button"
+                                                variant={showPreview ? "ghost" : "secondary"}
+                                                size="sm"
+                                                onClick={() => setShowPreview(false)}
+                                                className="h-7 px-3"
+                                            >
+                                                Editor
+                                            </Button>
+                                            <Button
+                                                type="button"
+                                                variant={showPreview ? "secondary" : "ghost"}
+                                                size="sm"
+                                                onClick={() => setShowPreview(true)}
+                                                className="h-7 px-3"
+                                            >
+                                                <Eye className="w-3 h-3 mr-1" />
+                                                Preview
+                                            </Button>
+                                        </div>
+                                    </div>
+
+                                    {!showPreview ? (
+                                        <RichTextEditor
+                                            id="content"
+                                            name="content"
+                                            required
+                                            placeholder="Start writing your post..."
+                                            className="h-[70vh]"
+                                            onChange={setContent}
+                                        />
+                                    ) : (
+                                        <div className="border rounded-lg shadow-sm bg-background min-h-[70vh] overflow-y-auto">
+                                            <div className="prose prose-sm sm:prose-base prose-neutral dark:prose-invert max-w-none p-6">
+                                                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                                                    {content || "*Start typing in the editor to see preview...*"}
+                                                </ReactMarkdown>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
 
                                 <div className="flex items-center space-x-2 pt-2">
@@ -121,7 +159,7 @@ export default function CreatePostPage() {
                                     <Label htmlFor="published" className="font-normal">Publish immediately</Label>
                                 </div>
 
-                                <div className="pt-4 flex justify-end">
+                                <div className="pt-4 flex justify-end gap-2">
                                     <Button type="submit">Create Post</Button>
                                 </div>
                             </form>

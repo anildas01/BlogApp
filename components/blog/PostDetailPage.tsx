@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import CommentSection from "@/components/blog/CommentSection";
 import { Post } from "@/types";
 
@@ -50,7 +51,7 @@ export default async function PostDetailPage({ slug }: { slug: string }) {
                 </header>
 
                 <div className="prose prose-sm sm:prose-base prose-neutral dark:prose-invert max-w-none mb-12 md:mb-16">
-                    <ReactMarkdown>{post.content || ""}</ReactMarkdown>
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.content || ""}</ReactMarkdown>
                 </div>
 
                 <CommentSection
