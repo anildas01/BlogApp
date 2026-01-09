@@ -105,7 +105,8 @@ export default function EditPostForm({ post }: { post: Post }) {
                                     </div>
                                 </div>
 
-                                {!showPreview ? (
+                                {/* Keep editor mounted but toggle visibility */}
+                                <div style={{ display: showPreview ? 'none' : 'block' }}>
                                     <RichTextEditor
                                         id="content"
                                         name="content"
@@ -114,7 +115,10 @@ export default function EditPostForm({ post }: { post: Post }) {
                                         className="h-[70vh]"
                                         onChange={setContent}
                                     />
-                                ) : (
+                                </div>
+
+                                {/* Show preview when toggled */}
+                                {showPreview && (
                                     <div className="border rounded-lg shadow-sm bg-background min-h-[70vh] overflow-y-auto">
                                         <div className="prose prose-sm sm:prose-base prose-neutral dark:prose-invert max-w-none p-6">
                                             <ReactMarkdown remarkPlugins={[remarkGfm]}>
